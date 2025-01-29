@@ -13,7 +13,7 @@ xAI Grok Conversation uses OpenAI's python package to call to call the xAI API U
 3. Go to Settings > Devices & Services.
 4. In the bottom right corner, select the Add Integration button.
 5. Follow the instructions on screen to complete the setup (API Key is required).
-    - [Generating an API Key]([text](https://console.x.ai/))
+    - [Generating an API Key](https://console.x.ai/)
 6. Go to Settings > [Voice Assistants](https://my.home-assistant.io/redirect/voice_assistants/).
 7. Click to edit Assistant (named "Home Assistant" by default).
 8. Select "Grok Conversation" from "Conversation agent" tab.
