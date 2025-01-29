@@ -1,3 +1,4 @@
+![xAI logo](https://brands.home-assistant.io/_/grok_conversation/icon.png)
 # xAI Grok Conversation
 This is a custom component of Home Assistant.
 
