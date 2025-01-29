@@ -19,10 +19,10 @@ xAI Grok Conversation uses OpenAI's python package to call to call the xAI API U
 8. Select "Grok Conversation" from "Conversation agent" tab.
     <details>
 
-    <summary>guide image</summary>
-    <img width="500" alt="스크린샷 2023-10-07 오후 6 15 29" src="https://github.com/jekalmin/extended_openai_conversation/assets/2917984/0849d241-0b82-47f6-9956-fdb82d678aca">
+    <summary>Screenshot</summary>
+    <img width="500" alt="Select a conversaion agent in Home Assistant" src="https://github.com/jekalmin/extended_openai_conversation/assets/2917984/0849d241-0b82-47f6-9956-fdb82d678aca">
 
     </details>
 
 ## Preparation
-After installed, you need to expose entities from "http://{your-home-assistant}/config/voice-assistants/expose".
+After installed, you need to expose entities from "https://{your-home-assistant}/config/voice-assistants/expose".
