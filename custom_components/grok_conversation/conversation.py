@@ -191,8 +191,6 @@ class OpenAIConversationEntity(
         ]
 
         client = self.entry.runtime_data
-        if hasattr(client, 'base_url'):
-            client.base_url = "https://api.x.ai/v1"
 
         # To prevent infinite loops, we limit the number of iterations
         for _iteration in range(MAX_TOOL_ITERATIONS):
