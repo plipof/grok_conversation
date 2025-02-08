@@ -1,7 +1,7 @@
 {
   "domain": "grok_conversation",
   "name": "xAI Grok Conversation",
-  "version": "0.3.69",
+  "version": "0.3.9",
   "after_dependencies": ["assist_pipeline", "intent"],
   "codeowners": ["@braytonstafford"],
   "config_flow": true,
