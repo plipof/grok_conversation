@@ -20,7 +20,7 @@ xAI Grok Conversation uses OpenAI's python package to call to call the xAI API U
     <details>
 
     <summary>Screenshot</summary>
-    <img width="500" alt="Select a conversaion agent in Home Assistant" src="https://github.com/jekalmin/extended_openai_conversation/assets/2917984/0849d241-0b82-47f6-9956-fdb82d678aca">
+    <img width="500" alt="Select a conversaion agent in Home Assistant" src="https://www.braytonstafford.com/content/images/2025/01/image-12.png">
 
     </details>
 
