@@ -89,8 +89,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: OpenAIConfigEntry) -> bool:
     """Set up Grok Conversation from a config entry."""
-    openai.base_url = "https://api.x.ai/v1"
     client = openai.AsyncOpenAI(
+        base_url="https://api.x.ai/v1",
         api_key=entry.data[CONF_API_KEY],
         http_client=get_async_client(hass)
     )

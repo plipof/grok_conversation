@@ -15,4 +15,4 @@ CONF_TOP_P = "top_p"
 RECOMMENDED_TOP_P = 1.0
 CONF_TEMPERATURE = "temperature"
 RECOMMENDED_TEMPERATURE = 1.0
-OPENAI_API_BASE = "https://api.x.ai/v1"
+OPENAI_BASE_URL = "https://api.x.ai/v1"
