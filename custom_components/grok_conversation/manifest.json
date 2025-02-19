@@ -1,14 +1,13 @@
 {
   "domain": "grok_conversation",
-  "name": "xAI Grok Conversation",
+  "name": "Grok Conversation",
   "after_dependencies": ["assist_pipeline", "intent"],
-  "codeowners": ["@braytonstafford"],
+  "codeowners": ["@claudiofcruz"],
   "config_flow": true,
   "dependencies": ["conversation"],
-  "documentation": "https://github.com/braytonstafford/grok_conversation",
+  "documentation": "https://www.home-assistant.io/integrations/openai_conversation",
   "integration_type": "service",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/braytonstafford/grok_conversation/issues",
-  "requirements": ["openai==1.59.9"],
-  "version": "0.4.20"
+  "requirements": ["openai==1.61.0"],
+  "version":"0.1.0"
 }
