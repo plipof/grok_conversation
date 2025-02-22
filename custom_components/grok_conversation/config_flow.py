@@ -7,6 +7,7 @@ from types import MappingProxyType
 from typing import Any
 
 import openai
+import httpx
 import voluptuous as vol
 
 from homeassistant.config_entries import (
@@ -62,16 +63,18 @@ RECOMMENDED_OPTIONS = {
 
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> None:
-    """Validate the user input allows us to connect.
-
-    Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
-    """
-    openai.base_url = "https://api.x.ai/v1"
+    """Validate the user input allows us to connect."""
+    # Use a plain httpx.AsyncClient to avoid proxy-related issues
+    http_client = httpx.AsyncClient()
     client = openai.AsyncOpenAI(
-    	api_key=data[CONF_API_KEY],
-	base_url="https://api.x.ai/v1"
+        api_key=data[CONF_API_KEY],
+        base_url="https://api.x.ai/v1",
+        http_client=http_client,
     )
-    await hass.async_add_executor_job(client.with_options(timeout=10.0).models.list)
+    try:
+        await hass.async_add_executor_job(client.with_options(timeout=10.0).models.list)
+    finally:
+        await client.close()  # Ensure the client is closed after validation
 
 
 class OpenAIConfigFlow(ConfigFlow, domain=DOMAIN):
