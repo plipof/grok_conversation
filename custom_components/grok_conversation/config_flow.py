@@ -1,4 +1,4 @@
-"""Config flow for Grok Conversation integration."""
+"""Config flow for OpenAI Conversation integration."""
 
 from __future__ import annotations
 
@@ -78,7 +78,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> None:
 
 
 class OpenAIConfigFlow(ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Grok Conversation."""
+    """Handle a config flow for OpenAI Conversation."""
 
     VERSION = 1
 
@@ -122,7 +122,7 @@ class OpenAIConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class OpenAIOptionsFlow(OptionsFlow):
-    """Grok config flow options handler."""
+    """OpenAI config flow options handler."""
 
     def __init__(self, config_entry: ConfigEntry) -> None:
         """Initialize options flow."""
@@ -168,7 +168,7 @@ def openai_config_option_schema(
     hass: HomeAssistant,
     options: dict[str, Any] | MappingProxyType[str, Any],
 ) -> VolDictType:
-    """Return a schema for Grok completion options."""
+    """Return a schema for OpenAI completion options."""
     hass_apis: list[SelectOptionDict] = [
         SelectOptionDict(
             label="No control",

@@ -150,7 +150,7 @@ def _chat_message_convert(
 class OpenAIConversationEntity(
     conversation.ConversationEntity, conversation.AbstractConversationAgent
 ):
-    """Grok conversation agent."""
+    """OpenAI conversation agent."""
 
     _attr_has_entity_name = True
     _attr_name = None

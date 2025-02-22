@@ -1,4 +1,4 @@
-"""Constants for the Grok Conversation integration."""
+"""Constants for the OpenAI Conversation integration."""
 
 import logging
 
@@ -8,7 +8,7 @@ LOGGER = logging.getLogger(__package__)
 CONF_RECOMMENDED = "recommended"
 CONF_PROMPT = "prompt"
 CONF_CHAT_MODEL = "chat_model"
-RECOMMENDED_CHAT_MODEL = "grok-2-latest"
+RECOMMENDED_CHAT_MODEL = "grok-2-1212"
 CONF_MAX_TOKENS = "max_tokens"
 RECOMMENDED_MAX_TOKENS = 150
 CONF_TOP_P = "top_p"

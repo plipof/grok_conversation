@@ -1,4 +1,4 @@
-"""The Grok Conversation integration."""
+"""The OpenAI Conversation integration."""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ type OpenAIConfigEntry = ConfigEntry[openai.AsyncClient]
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up Grok Conversation."""
+    """Set up OpenAI Conversation."""
 
     async def render_image(call: ServiceCall) -> ServiceResponse:
         """Render an image with dall-e."""
