@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import openai
+import httpx
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
@@ -19,7 +20,6 @@ from homeassistant.exceptions import (
     ServiceValidationError,
 )
 from homeassistant.helpers import config_validation as cv, selector
-from homeassistant.helpers.httpx_client import get_async_client
 from homeassistant.helpers.typing import ConfigType
 
 from .const import DOMAIN, LOGGER
@@ -89,14 +89,12 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: OpenAIConfigEntry) -> bool:
     """Set up Grok Conversation from a config entry."""
+    http_client = httpx.AsyncClient()
     client = openai.AsyncOpenAI(
         base_url="https://api.x.ai/v1",
         api_key=entry.data[CONF_API_KEY],
-        http_client=get_async_client(hass)
+        http_client=http_client,
     )
-
-    # Cache current platform data which gets added to each request (caching done by library)
-    _ = await hass.async_add_executor_job(client.platform_headers)
 
     try:
         await hass.async_add_executor_job(client.with_options(timeout=10.0).models.list)
@@ -104,7 +102,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: OpenAIConfigEntry) -> bo
         LOGGER.error("Invalid API key: %s", err)
         return False
     except openai.OpenAIError as err:
-        raise ConfigEntryNotReady(err) from err
+        raise ConfigEntryNotReady(f"Failed to connect to xAI API: {err}") from err
 
     entry.runtime_data = client
 
@@ -115,4 +113,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: OpenAIConfigEntry) -> bo
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload Grok."""
+    if hasattr(entry, "runtime_data") and entry.runtime_data:
+        await entry.runtime_data.close()
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
