@@ -1,25 +1,26 @@
-"""Constants for the OpenAI Conversation integration."""
+"""Constants for the Grok Conversation integration."""
 
 import logging
 
 DOMAIN = "grok_conversation"
 LOGGER = logging.getLogger(__package__)
 
-CONF_RECOMMENDED = "recommended"
-CONF_PROMPT = "prompt"
 CONF_CHAT_MODEL = "chat_model"
-RECOMMENDED_CHAT_MODEL = "grok-2-1212"
+CONF_FILENAMES = "filenames"
 CONF_MAX_TOKENS = "max_tokens"
-RECOMMENDED_MAX_TOKENS = 150
-CONF_TOP_P = "top_p"
-RECOMMENDED_TOP_P = 1.0
-CONF_TEMPERATURE = "temperature"
-RECOMMENDED_TEMPERATURE = 1.0
-OPENAI_BASE_URL = "https://api.x.ai/v1"
+CONF_PROMPT = "prompt"
 CONF_REASONING_EFFORT = "reasoning_effort"
+CONF_RECOMMENDED = "recommended"
+CONF_TEMPERATURE = "temperature"
+CONF_TOP_P = "top_p"
+OPENAI_BASE_URL = "https://api.x.ai/v1"
+RECOMMENDED_CHAT_MODEL = "grok-2-1212"
+RECOMMENDED_MAX_TOKENS = 150
 RECOMMENDED_REASONING_EFFORT = "low"
+RECOMMENDED_TEMPERATURE = 1.0
+RECOMMENDED_TOP_P = 1.0
 
-UNSUPPORTED_MODELS = [
+UNSUPPORTED_MODELS: list[str] = [
     "o1-mini",
     "o1-mini-2024-09-12",
     "o1-preview",
