@@ -47,7 +47,6 @@ from .const import (
 # Max number of back and forth with the LLM to generate a response
 MAX_TOOL_ITERATIONS = 10
 
-
 FUNCTIONS = [
     {
         "name": "HassTurnOn",
@@ -73,7 +72,6 @@ FUNCTIONS = [
     }
 ]
 
-
 async def async_setup_entry(
     hass: HomeAssistant,
     config_entry: OpenAIConfigEntry,
@@ -82,7 +80,6 @@ async def async_setup_entry(
     """Set up conversation entities."""
     agent = OpenAIConversationEntity(config_entry)
     async_add_entities([agent])
-
 
 def _format_tool(
     tool: llm.Tool, custom_serializer: Callable[[Any], Any] | None
@@ -95,7 +92,6 @@ def _format_tool(
     if tool.description:
         tool_spec["description"] = tool.description
     return ChatCompletionToolParam(type="function", function=tool_spec)
-
 
 def _convert_content_to_param(
     content: conversation.Content,
@@ -134,7 +130,6 @@ def _convert_content_to_param(
             for tool_call in content.tool_calls
         ],
     )
-
 
 async def _transform_stream(
     result: AsyncStream[ChatCompletionChunk],
@@ -194,7 +189,6 @@ async def _transform_stream(
             "tool_name": delta_tool_call.function.name,
             "tool_args": delta_tool_call.function.arguments or "",
         }
-
 
 class OpenAIConversationEntity(
     conversation.ConversationEntity, conversation.AbstractConversationAgent
@@ -277,6 +271,11 @@ class OpenAIConversationEntity(
                 _format_tool(tool, chat_log.llm_api.custom_serializer)
                 for tool in chat_log.llm_api.tools
             ]
+        # Combine existing tools with our custom FUNCTIONS
+        if tools is None:
+            tools = []
+        for func in FUNCTIONS:
+            tools.append(ChatCompletionToolParam(type="function", function=func))
 
         model = options.get(CONF_CHAT_MODEL, RECOMMENDED_CHAT_MODEL)
         messages = [_convert_content_to_param(content) for content in chat_log.content]
@@ -312,14 +311,40 @@ class OpenAIConversationEntity(
                 LOGGER.error("Error talking to Grok: %s", err)
                 raise HomeAssistantError("Error talking to Grok") from err
 
-            messages.extend(
-                [
-                    _convert_content_to_param(content)
-                    async for content in chat_log.async_add_delta_content_stream(
-                        user_input.agent_id, _transform_stream(result)
-                    )
-                ]
-            )
+            # Process the stream and handle tool calls
+            async for content in chat_log.async_add_delta_content_stream(
+                user_input.agent_id, _transform_stream(result)
+            ):
+                messages.append(_convert_content_to_param(content))
+                # Check for tool calls and execute them
+                if hasattr(content, "tool_calls") and content.tool_calls:
+                    for tool_call in content.tool_calls:
+                        function_name = tool_call.tool_name
+                        args = tool_call.tool_args
+                        if function_name == "HassTurnOn":
+                            await self.hass.services.async_call(
+                                "light", "turn_on", {"entity_id": f"light.{args['name'].lower()}"}
+                            )
+                            # Add tool result to messages
+                            messages.append(
+                                ChatCompletionToolMessageParam(
+                                    role="tool",
+                                    tool_call_id=tool_call.id,
+                                    content=json.dumps({"success": True}),
+                                )
+                            )
+                        elif function_name == "HassTurnOff":
+                            await self.hass.services.async_call(
+                                "light", "turn_off", {"entity_id": f"light.{args['name'].lower()}"}
+                            )
+                            # Add tool result to messages
+                            messages.append(
+                                ChatCompletionToolMessageParam(
+                                    role="tool",
+                                    tool_call_id=tool_call.id,
+                                    content=json.dumps({"success": True}),
+                                )
+                            )
 
             if not chat_log.unresponded_tool_results:
                 break
