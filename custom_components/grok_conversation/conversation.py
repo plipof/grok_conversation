@@ -48,6 +48,32 @@ from .const import (
 MAX_TOOL_ITERATIONS = 10
 
 
+FUNCTIONS = [
+    {
+        "name": "HassTurnOn",
+        "description": "Turn on a Home Assistant device",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "The name of the device"}
+            },
+            "required": ["name"]
+        }
+    },
+    {
+        "name": "HassTurnOff",
+        "description": "Turn off a Home Assistant device",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "The name of the device"}
+            },
+            "required": ["name"]
+        }
+    }
+]
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     config_entry: OpenAIConfigEntry,
