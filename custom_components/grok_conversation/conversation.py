@@ -115,11 +115,10 @@ async def _transform_stream(
 ) -> AsyncGenerator[conversation.AssistantContentDeltaDict]:
     """Transform an OpenAI delta stream into HA format."""
     current_tool_call: dict | None = None
+    buffered_content = ""
 
     async for chunk in result:
-        LOGGER.debug("Received chunk: %s", chunk)
         choice = chunk.choices[0]
-
         if choice.finish_reason:
             if current_tool_call:
                 yield {
@@ -131,18 +130,17 @@ async def _transform_stream(
                         )
                     ]
                 }
+            if buffered_content:
+                yield {"content": buffered_content.strip(), "role": "assistant"}
 
             break
 
-        delta = chunk.choices[0].delta
+        delta = choice.delta
 
         # We can yield delta messages not continuing or starting tool calls
         if current_tool_call is None and not delta.tool_calls:
-            yield {  # type: ignore[misc]
-                key: value
-                for key in ("role", "content")
-                if (value := getattr(delta, key)) is not None
-            }
+            if delta.content:
+                buffered_content += delta.content
             continue
 
         # When doing tool calls, we should always have a tool call
