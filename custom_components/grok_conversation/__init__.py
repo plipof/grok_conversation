@@ -35,7 +35,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up Grok Conversation."""
 
     async def render_image(call: ServiceCall) -> ServiceResponse:
-        """Render an image with dall-e."""
+        """Render an image with grok."""
         entry_id = call.data["config_entry"]
         entry = hass.config_entries.async_get_entry(entry_id)
 
@@ -50,7 +50,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
         try:
             response = await client.images.generate(
-                model="dall-e-3",
+                model="grok-2-image",
                 prompt=call.data["prompt"],
                 size=call.data["size"],
                 quality=call.data["quality"],
